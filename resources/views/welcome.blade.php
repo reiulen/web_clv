@@ -18,13 +18,4 @@
             </div>
         </div>
     </body>
-    <script>
-        axios.get('/api/admin')
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    </script>
 </html>
