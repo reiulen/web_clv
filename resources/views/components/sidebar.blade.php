@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="{{ route('dashboard') }}" class="brand-link d-flex align-items-center pl-4" style="gap: 7px">
         <img src="{{ asset('assets/images/logo_clv.png') }}" alt=" Logo"
-        style="height: 40px; width: 40px; object-fit: cover" />
+                style="height: 40px; width: 40px; object-fit: cover" />
         <div class="brand-text h4">CLV</div>
     </a>
 
@@ -11,7 +11,7 @@
     <div
         class="sidebar os-host os-theme-light os-host-resize-disabled os-host-transition os-host-scrollbar-horizontal-hidden os-host-scrollbar-vertical-hidden">
         <!-- Sidebar user panel -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-start"  style="gap: 5px;">
+        <div class="user-panel mt-3 pt-2 pb-2 mb-3 d-flex align-items-start"  style="gap: 5px;">
             <div class="image">
                 <img src="{{ Auth::user()->profile_photo_url }}"
                     class="img-circle elevation-2"
@@ -60,7 +60,7 @@
                     with font-awesome or any other icon font library -->
                 <li class="nav-header">MENU UTAMA</li>
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ set_active(['dashboard']) }}">
+                    <a href="{{ route('dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>{{ __('Dashboard') }}</p>
                     </a>

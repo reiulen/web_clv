@@ -25,8 +25,8 @@
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-          <img class="animation__shake" src="{{ asset('assets/images/logo.png') }}" alt="AdminLTELogo" height="60" width="60" />
-          <h1>{{ __('Bank Mini') }}</h1>
+          <img class="animation__shake" src="{{ asset('assets/images/logo_clv.png') }}" alt="Logo CLV" height="100" width="100" style="object-fit: cover" />
+          <h1>{{ __('CLV') }}</h1>
         </div>
         <x-navbar></x-navbar>
         <x-sidebar></x-sidebar>
@@ -58,7 +58,7 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
     <script src="{{ asset('assets/dist/js/pages/global.js') }}"></script>
-    {{-- <script>
+    <script>
         const navlink = $('.nav-link');
         navlink.each(function(){
             const href = $(this).attr('href');
@@ -66,7 +66,7 @@
                 $(this).addClass('active');
             }
         });
-    </script> --}}
+    </script>
     @if (session('pesan'))
         <script>
           Swal.fire(

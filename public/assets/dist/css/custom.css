@@ -17,19 +17,19 @@ body {
 }
 
 .card-outline {
-    border-top: 3px solid #6091ba !important;
+    border-top: 3px solid #a79d61!important;
 }
 
 .card-header a.h1:hover {
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .btn.btn-primary {
-    background-color: #6091ba !important;
+    background-color: #a79d61!important;
 }
 
 .btn.btn-primary:focus {
-    border: #6091ba !important;
+    border: #a79d61!important;
 }
 
 .brand-link {
@@ -37,7 +37,7 @@ body {
 }
 
 .bg-blue {
-    background-color: #6091ba !important;
+    background-color: #a79d61!important;
     color: white;
 }
 
@@ -46,7 +46,7 @@ body {
 }
 
 .nav-link.active {
-    background-color: #6091ba !important;
+    background-color: #a79d61!important;
 }
 
 .nav-link.active-sub {
@@ -54,7 +54,7 @@ body {
 }
 
 .nav-link.active a:hover {
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .btn-masuk {
@@ -62,13 +62,13 @@ body {
 }
 
 .btn-masuk:focus {
-    background-color: #4d90c7 !important;
+    background-color: #c0b577 !important;
 }
 
 .btn-primary {
     color: #fff;
-    background-color: #4d90c7;
-    border-color: #4d90c7;
+    background-color: #c0b577;
+    border-color: #c0b577;
 }
 
 .btn-primary:hover {
@@ -247,11 +247,11 @@ ul[role='tablist']  .nav-link:hover {
     box-shadow: 0px 4px 26px 0px #6091babd;
     -webkit-box-shadow: 0px 4px 26px 0px #6091ba6b;
     -moz-box-shadow: 0px 4px 26px 0px #6091ba6b;
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .content-header .btn-laporan .btn.btn-none {
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .content-header .btn-laporan .btn.btn-none:hover {
@@ -267,7 +267,7 @@ ul[role='tablist']  .nav-link:hover {
 }
 
 .content-header .btn-laporan .btn.btn-none {
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .content-header .btn-laporan .btn.btn-none:hover {
@@ -299,7 +299,7 @@ ul[role='tablist']  .nav-link:hover {
 }
 
 .select2-selection__choice{
-    background-color: #6091ba !important;
+    background-color: #a79d61!important;
 }
 
 table{
@@ -321,7 +321,7 @@ table{
 }
 
 .login-box .btn-siswa {
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .login-box .btn-siswa:hover {
@@ -338,7 +338,7 @@ table{
 }
 
 .login-box .btn-pengelola {
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .login-box .btn-pengelola:hover {
@@ -355,7 +355,7 @@ table{
 }
 
 .text-primary{
-    color: #6091ba !important;
+    color: #a79d61!important;
 }
 
 .gridjs-pages button {
@@ -383,12 +383,12 @@ table{
 }
 
 .dropdown-item.active{
-    background-color: #6091ba !important;
+    background-color: #a79d61!important;
     color: white !important;
 }
 
 .gridjs-currentPage{
-    background-color: #6091ba !important;
+    background-color: #a79d61!important;
     color: white !important;
 }
 
