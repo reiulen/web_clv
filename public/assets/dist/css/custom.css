@@ -119,12 +119,12 @@ span.badge {
 }
 
 .dropdown a.dropdown-item:focus {
-    background-color: #6492b8;
+    background-color: #55513f;
     color: white;
 }
 
 .dropdown a.dropdown-item:hover {
-    background-color: #6492b8c4;
+    background-color: #55513f;
     color: white;
 }
 
@@ -412,6 +412,12 @@ table{
   color: #ecf0f1;
 }
 
+.image-preview.sm,
+#callback-preview {
+    width: 100%;
+    height: 120px !important;
+  }
+
 .image-preview input, #callback-preview input {
   line-height: 200px;
   font-size: 200px;
@@ -437,6 +443,13 @@ table{
   bottom: 0;
   margin: auto;
   text-align: center;
+}
+
+.image-preview.sm label, #callback-preview.sm label {
+    width: 100px !important;
+    height: 34px !important;
+    font-size: 10px !important;
+    line-height: 34px !important;
 }
 
 
@@ -499,6 +512,13 @@ table{
     margin-bottom: 10px;
 }
 
+.gallery.gallery-sm .gallery-item {
+    width: 100%;
+    height: 105px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
 .gallery.gallery-md .gallery-more div {
   line-height: 78px;
 }
@@ -508,6 +528,10 @@ table{
 }
 .gallery.gallery-fw .gallery-more div {
   font-size: 20px;
+}
+
+.hover-underline:hover {
+    text-decoration: underline;
 }
 
 @media (max-width: 767.98px) {

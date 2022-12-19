@@ -12,7 +12,9 @@ $(".logout").click(function () {
     }).then((result) => {
         if (result.isConfirmed) {
             const logout = `${url}/logout`;
-            $(location).attr("href", logout);
+            const formLogout = $('#logoutForm');
+            formLogout.attr('action', logout);
+            formLogout.submit();
         }
     });
 });
@@ -31,6 +33,35 @@ function hapus(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $(`#form-hapus${id}`).submit();
+        }
+    });
+}
+
+function deleteDataTable(nama, urlTarget, table) {
+    Swal.fire({
+        title: "Apakah yakin?",
+        text: `Data ${nama} akan dihapus`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#6492b8da",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yakin",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: urlTarget,
+                method: "post",
+                data: [{ name: "_method", value: "DELETE" }],
+                success: function (res) {
+                    table.draw();
+                    Swal.fire(`Berhasil dihapus`, res.message, "success");
+                },
+                error: function (res) {
+                    console.log(res);
+                    Swal.fire(`Gagal`, `${res.responseJSON.message}`, "error");
+                },
+            });
         }
     });
 }
