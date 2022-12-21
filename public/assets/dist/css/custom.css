@@ -551,3 +551,47 @@ table{
         margin-top: 1px !important;
     }
 }
+
+.fas {
+    display: inline-block;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    width: 20px;
+    height: 20px;
+}
+
+.fas.fa-bed-alt {
+    -webkit-mask: url("/assets/icons/bed-alt.svg");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    background-color: #6C6C6C;
+}
+
+.fas.fa-toilet-alt {
+    -webkit-mask: url("/assets/icons/toilet-alt.svg");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    background-color: #6C6C6C;
+}
+
+.fas.fa-cars-alt {
+    -webkit-mask: url("/assets/icons/cars-alt.svg");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    background-color: #6C6C6C;
+}
+
+.fas.fa-ruler-alt {
+    -webkit-mask: url("/assets/icons/ruler-alt.svg");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    background-color: #6C6C6C;
+}

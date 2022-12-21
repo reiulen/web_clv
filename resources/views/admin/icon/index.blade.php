@@ -1,13 +1,12 @@
-<x-app-layout title="Tipe Halaman">
+<x-app-layout title="Icon">
     <x-content_header>
         <div class="col-sm-6">
-            <h4>Artikel</h4>
+            <h4>Icon</h4>
         </div>
 
         <x-breadcrumb>
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item">{{ __('Blog') }}</li>
-            <li class="breadcrumb-item item">{{ __('Artikel') }}</li>
+            <li class="breadcrumb-item item">{{ __('Icon') }}</li>
         </x-breadcrumb>
     </x-content_header>
     <!-- Main content -->
@@ -34,19 +33,22 @@
                             <thead>
                                 <tr>
                                     <th width="10px">No</th>
-                                    <th>Tipe Halaman</th>
+                                    <th>Nama</th>
                                 </tr>
                                 <tr>
                                     <th></th>
                                     <th>
                                         <div class="row" style="gap: 6px;">
-                                            <div class="col-sm-4">
-                                                <input class="form-control" placeholder="Cari nama" name="name" type="text" id="filterName">
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <input class="form-control" name="date" type="date" id="filterDate">
+                                            <div class="col-sm-3">
+                                                <input class="form-control" placeholder="Cari nama" name="name" id="filterName" type="text">
                                             </div>
                                             <div class="col-sm-3">
+                                                <input class="form-control" placeholder="Cari icon" name="icon" id="filterIcon" type="text">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input class="form-control" name="date" type="date" id="filterDate">
+                                            </div>
+                                            <div class="col-sm-2">
                                                 <select class="form-control" name="status" id="filterStatus">
                                                     <option value="">Pilih Status</option>
                                                     <option value="1">Publish</option>
@@ -78,7 +80,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Input Tipe</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Input Icon</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -87,11 +89,18 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="name">Nama Tipe</label>
+                        <label for="name">Nama</label>
                         <input type="text"
                                 class="form-control"
                                 id="name"
                                 name="name">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="icon">Icon</label>
+                        <input type="text"
+                                class="form-control"
+                                id="icon"
+                                name="icon">
                     </div>
                     <div class="form-group mb-3">
                         <label for="status">
@@ -110,6 +119,11 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group mb-2">
+                        <a href="https://fontawesome.com/v5/icons/" target="_blank">
+                            Lihat format icon
+                        </a>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -124,6 +138,6 @@
 
     @include('lib.datatable')
     @push('script')
-    <script src="{{ asset('assets/dist/js/pages/type_page/index.js') }}"></script>
+    <script src="{{ asset('assets/dist/js/pages/icons/index.js') }}"></script>
     @endpush
 </x-app-layout>

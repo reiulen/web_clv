@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Page;
 use App\Models\TypePage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
-class TypePageController extends Controller
+class PageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +19,10 @@ class TypePageController extends Controller
      */
     public function index()
     {
-        return view('admin.halaman.type_page.index');
+        $type_page = TypePage::select('id', 'name', 'status')
+                                ->where('status', 1)
+                                ->pluck('name', 'id');
+        return view('admin.halaman.page.index', compact('type_page'));
     }
 
     /**
@@ -28,7 +32,10 @@ class TypePageController extends Controller
      */
     public function create()
     {
-        //
+        $type_page = TypePage::select('id', 'name', 'status')
+                                ->where('status', 1)
+                                ->pluck('name', 'id');
+        return view('admin.halaman.page.create-update', compact('type_page'));
     }
 
     /**
@@ -39,42 +46,29 @@ class TypePageController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-
-        $data = TypePage::find($request->id);
-        $input['slug'] = Str::slug($request->name);
-        if(isset($data)) {
-            $validasi = Validator::make($input, [
-                'status' => 'required',
-                'name' => 'required|unique:type_pages,name,'.$data->id,
-            ]);
-
-            if($validasi->fails())
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $validasi->errors()->first()
-                ]);
-
-            $data->update($input);
-        }else {
-            $validasi = Validator::make($input, [
-                'status' => 'required',
-                'name' => 'required|unique:type_pages,name',
-            ]);
-
-            if($validasi->fails())
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $validasi->errors()->first()
-                ]);
-
-            $data = TypePage::create($input);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => "Data $data->name berhasil disimpan" ,
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required'
         ]);
+
+        try {
+            $input = $request->all();
+            if($request->hasFile('thumbnail')){
+                $input['thumbnail'] = upload_image($request->file('thumbnail'), 'Halaman', Str::slug($request->title));
+            }
+            $input['slug'] = Str::slug($request->title);
+
+            Page::create($input);
+
+            return redirect(route('page.halaman.index'))
+                        ->with('success', 'Halaman berhasil ditambahkan');
+        }catch(\Exception $e) {
+            return back()
+                    ->with('error', $e->getMessage())
+                    ->withInput();
+        }
     }
 
     /**
@@ -96,7 +90,11 @@ class TypePageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Page::findOrFail($id);
+        $type_page = TypePage::select('id', 'name', 'status')
+                                ->where('status', 1)
+                                ->pluck('name', 'id');
+        return view('admin.halaman.page.create-update', compact('data', 'type_page'));
     }
 
     /**
@@ -108,7 +106,32 @@ class TypePageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required'
+        ]);
+
+        $data = Page::findOrFail($id);
+
+        try {
+            $input = $request->all();
+            if($request->hasFile('thumbnail')){
+                if(isset($data->thumbnail)) File::delete($data->thumbnail);
+                $input['thumbnail'] = upload_image($request->file('thumbnail'), 'Page', Str::slug($request->title));
+            }
+            $input['slug'] = Str::slug($request->title);
+
+            $data->update($input);
+
+            return redirect(route('page.halaman.index'))
+                        ->with('success', 'Halaman berhasil diubah');
+        }catch(\Exception $e) {
+            return back()
+                    ->with('error', $e->getMessage())
+                    ->withInput();
+        }
     }
 
     /**
@@ -119,25 +142,28 @@ class TypePageController extends Controller
      */
     public function destroy($id)
     {
-        $data = TypePage::find($id);
+        $data = Page::find($id);
         if(empty($data))
             return response()->json([
                 'message' => 'Data tidak ditemukan'
             ]);
 
+        if($data->thumbnail)
+            File::delete($data->thumbnail);
+
         $data->delete();
 
         return response()->json([
-            'message' => "Data $data->name berhasil dihapus" ,
+            'message' => "Data $data->title berhasil dihapus" ,
         ]);
     }
 
-
     public function dataTable(Request $request)
     {
-        $data = TypePage::select('id', 'status', 'name', 'created_at')
-                            ->latest()
-                            ->filter($request);
+        $data = Page::select('id', 'status', 'title', 'created_at', 'type_page_id')
+                        ->with('typePage:id,name')
+                        ->latest()
+                        ->filter($request);
 
         return DataTables::of($data)
                             ->addindexColumn()
@@ -156,18 +182,21 @@ class TypePageController extends Controller
                                         break;
                                 }
                                 $content = "<div class='row align-items-center'>
-                                                <div class='col-md-5'>
-                                                    <div role='button' class='text-dark hover-underline btnEdit' data-id='$data->id' data-name='$data->name' data-status='$data->status'>
+                                                <div class='col-md-3'>
+                                                    <a href='".route('page.halaman.edit', $data->id)."' class='text-dark hover-underline'>
                                                         <h6>
-                                                            $data->name
+                                                            $data->title
                                                         </h6>
-                                                    </div>
+                                                    </a>
                                                 </div>
-                                                <div class='col-md-2 ml-auto d-flex flex-column text-left'>
+                                                <div class='col-md-2 text-center mx-auto d-flex flex-column'>
                                                     <span>Created At</span>
                                                     <strong>".date('Y-m-d', strtotime($data->created_at))."</strong>
                                                 </div>
-                                                <div class='col-md-2 ml-auto'>
+                                                <div class='col-md-2'>
+                                                    ".($data->typePage->name ?? '-')."
+                                                </div>
+                                                <div class='col-md-2'>
                                                     $status
                                                 </div>
                                                 <div class='col-md-1'>
@@ -175,11 +204,15 @@ class TypePageController extends Controller
                                                         <i class='fas fa-ellipsis-v'></i>
                                                     </button>
                                                     <div class='dropdown-menu dropdown-menu-right border-0' aria-labelledby='dropdownMenuButton'>
-                                                        <div role='button' class='dropdown-item btnEdit' data-id='$data->id' data-name='$data->name' data-status='$data->status'>
+                                                        <a class='dropdown-item' href='/' target='_blank'>
+                                                            <i class='fas fa-eye text-primary pr-1'></i>
+                                                            Pratijau
+                                                        </a>
+                                                        <a class='dropdown-item' href='".route('page.halaman.edit', $data->id)."'>
                                                             <i class='fas fa-pencil-alt text-success pr-1'></i>
                                                             Ubah
-                                                        </div>
-                                                        <div role='button' class='dropdown-item btn-hapus' data-id='$data->id' data-title='$data->name'>
+                                                        </a>
+                                                        <div role='button' class='dropdown-item btn-hapus' data-id='$data->id' data-title='$data->title'>
                                                             <i class='fas fa-trash text-danger pr-1'></i>
                                                             Hapus
                                                         </div>

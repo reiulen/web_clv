@@ -65,3 +65,21 @@ function deleteDataTable(nama, urlTarget, table) {
         }
     });
 }
+
+async function sendData(url, type, data) {
+    const config = {
+        method: type,
+        url: url,
+        data: data,
+    };
+    const result = await axios(config)
+                    .then((res) => res.data)
+                    .then(async (res) => {
+                        return res;
+                    }).catch(async (err) => {
+                        Swal.fire(`Gagal`, err.responseJSON.message, "error");
+                        return err.response;
+                    });
+
+    return result;
+}

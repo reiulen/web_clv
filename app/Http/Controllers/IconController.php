@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Models\TypePage;
-use Illuminate\Support\Str;
+use App\Models\Icons;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class TypePageController extends Controller
+class IconController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +16,7 @@ class TypePageController extends Controller
      */
     public function index()
     {
-        return view('admin.halaman.type_page.index');
+        return view('admin.icon.index');
     }
 
     /**
@@ -41,12 +39,11 @@ class TypePageController extends Controller
     {
         $input = $request->all();
 
-        $data = TypePage::find($request->id);
-        $input['slug'] = Str::slug($request->name);
+        $data = Icons::find($request->id);
         if(isset($data)) {
             $validasi = Validator::make($input, [
                 'status' => 'required',
-                'name' => 'required|unique:type_pages,name,'.$data->id,
+                'name' => 'required|unique:icons,name,'.$data->id,
             ]);
 
             if($validasi->fails())
@@ -59,7 +56,7 @@ class TypePageController extends Controller
         }else {
             $validasi = Validator::make($input, [
                 'status' => 'required',
-                'name' => 'required|unique:type_pages,name',
+                'name' => 'required|unique:icons,name',
             ]);
 
             if($validasi->fails())
@@ -68,7 +65,7 @@ class TypePageController extends Controller
                     'message' => $validasi->errors()->first()
                 ]);
 
-            $data = TypePage::create($input);
+            $data = Icons::create($input);
         }
 
         return response()->json([
@@ -119,7 +116,7 @@ class TypePageController extends Controller
      */
     public function destroy($id)
     {
-        $data = TypePage::find($id);
+        $data = Icons::find($id);
         if(empty($data))
             return response()->json([
                 'message' => 'Data tidak ditemukan'
@@ -132,10 +129,9 @@ class TypePageController extends Controller
         ]);
     }
 
-
     public function dataTable(Request $request)
     {
-        $data = TypePage::select('id', 'status', 'name', 'created_at')
+        $data = Icons::select('id', 'status', 'name', 'icon', 'created_at')
                             ->latest()
                             ->filter($request);
 
@@ -156,12 +152,19 @@ class TypePageController extends Controller
                                         break;
                                 }
                                 $content = "<div class='row align-items-center'>
-                                                <div class='col-md-5'>
-                                                    <div role='button' class='text-dark hover-underline btnEdit' data-id='$data->id' data-name='$data->name' data-status='$data->status'>
-                                                        <h6>
-                                                            $data->name
-                                                        </h6>
+                                                <div class='col-md-3'>
+                                                    <div role='button' class='text-dark hover-underline btnEdit' data-id='$data->id' data-name='$data->name' data-status='$data->status' data-icon='$data->icon'>
+                                                        <div class='''>
+                                                            <h6>
+                                                                <i class='$data->icon align-middle pr-2'></i>
+                                                                $data->name
+                                                            </h6>
+                                                        </div>
                                                     </div>
+                                                </div>
+                                                <div class='col-md-3 ml-auto d-flex flex-column text-left'>
+                                                    <span>Icon</span>
+                                                    <strong>$data->icon</strong>
                                                 </div>
                                                 <div class='col-md-2 ml-auto d-flex flex-column text-left'>
                                                     <span>Created At</span>
@@ -175,7 +178,7 @@ class TypePageController extends Controller
                                                         <i class='fas fa-ellipsis-v'></i>
                                                     </button>
                                                     <div class='dropdown-menu dropdown-menu-right border-0' aria-labelledby='dropdownMenuButton'>
-                                                        <div role='button' class='dropdown-item btnEdit' data-id='$data->id' data-name='$data->name' data-status='$data->status'>
+                                                        <div role='button' class='dropdown-item btnEdit' data-id='$data->id' data-name='$data->name' data-status='$data->status' data-icon='$data->icon'>
                                                             <i class='fas fa-pencil-alt text-success pr-1'></i>
                                                             Ubah
                                                         </div>

@@ -42,7 +42,7 @@ class ArtikelController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'thumbnail' => 'required',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required'
         ]);
 
@@ -99,6 +99,7 @@ class ArtikelController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required'
         ]);
 
@@ -172,7 +173,7 @@ class ArtikelController extends Controller
                                 }
                                 $content = "<div class='row align-items-center'>
                                                 <div class='col-md-5'>
-                                                    <a href='/' class='text-dark hover-underline'>
+                                                    <a href='".route('blog.artikel.edit', $data->id)."' class='text-dark hover-underline'>
                                                         <h6>
                                                             $data->title
                                                         </h6>

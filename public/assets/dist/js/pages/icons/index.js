@@ -36,12 +36,13 @@ const table = $("#example1").DataTable({
     processing: true,
     serverSide: true,
     ajax: {
-        url: `${url}/admin/page/type_page/dataTable`,
+        url: `${url}/admin/icon/dataTable`,
         method: "POST",
         data: function (d) {
             d.name = $('input[name="name"]').val();
             d.date = $('input[name="date"]').val();
             d.status = $('select[name="status"]').val();
+            d.icon = $('input[name="icon"]').val();
             return d;
         },
     },
@@ -63,6 +64,10 @@ $('#filterName').on('keyup', function() {
     table.draw();
 });
 
+$('#filterIcon').on('keyup', function() {
+    table.draw();
+});
+
 $('#filterDate').on('change', function() {
     table.draw();
 });
@@ -76,7 +81,7 @@ table.on("click", ".btn-hapus", function (e) {
     e.preventDefault();
     const id = $(this).data("id");
     const nama = $(this).data("title");
-    const urlTarget = `${url}/admin/page/type_page/${id}`
+    const urlTarget = `${url}/admin/icon/${id}`
     deleteDataTable(nama, urlTarget, table)
 });
 
@@ -91,11 +96,13 @@ $(function() {
         const id = $(this).data('id');
         const name = $(this).data('name');
         const status = $(this).data('status');
+        const icon = $(this).data('icon');
         const modal = $('#modalInput');
         modal.modal('show');
         form.find('[name="id"]').val(id);
         form.find('[name="name"]').val(name);
         form.find('[name="status"]').val(status);
+        form.find('[name="icon"]').val(icon);
     });
 
     $('#submitInput').on('change', function() {
@@ -110,7 +117,7 @@ $(function() {
         buttonSubmit.html('Loading...');
         const data = form.serialize();
 
-       const result = await sendData(`${url}/admin/page/type_page`, 'POST', data);
+       const result = await sendData(`${url}/admin/icon`, 'POST', data);
         if (result.status == 'success') {
             buttonSubmit.attr('disabled', false).html('Simpan');
             $('#modalInput').modal('hide');
@@ -132,8 +139,9 @@ $(function() {
         const submitBtn = $('#submitBtn');
         const name = $('#name').val();
         const status = $('#status').val();
+        const icon = $('#icon').val();
 
-        if (name == '' || status == '') {
+        if (name == '' || status == '' || icon == '') {
             submitBtn.attr('disabled', true);
         } else {
             submitBtn.attr('disabled', false);

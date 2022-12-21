@@ -87,8 +87,8 @@
                     </ul>
                 </li>
                 <li
-                    class="nav-item nav-item {{ set_menu_open(['page.type_page.index']) }}">
-                    <a href="#" class="nav-link {{ set_active(['page.type_page.index']) }}">
+                    class="nav-item nav-item {{ set_menu_open(['page.type_page.index', 'page.halaman.index']) }}">
+                    <a href="#" class="nav-link {{ set_active(['page.type_page.index', 'page.halaman.index']) }}">
                         <i class="fas fa-book nav-icon"></i>
                         <p>
                             {{ __('Halaman') }}
@@ -97,12 +97,54 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="{{ route('page.halaman.index') }}" class="nav-link {{ set_active_sub(['page.halaman.index']) }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Halaman') }}</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('page.type_page.index') }}" class="nav-link {{ set_active_sub(['page.type_page.index']) }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>{{ __('Tipe Halaman') }}</p>
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('facilities.index') }}" class="nav-link {{ set_active_sub(['facilities.index']) }}">
+                        <i class="fas fa-book nav-icon"></i>
+                        <p>{{ __('Fasilitas') }}</p>
+                    </a>
+                </li>
+                <li
+                    class="nav-item nav-item {{ set_menu_open(['icon.index']) }}">
+                    <a href="#" class="nav-link {{ set_active(['icon.index']) }}">
+                        <i class="fas fa-book nav-icon"></i>
+                        <p>
+                            {{ __('Produk') }}
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('product.index') }}" class="nav-link {{ set_active_sub(['product.index']) }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Produk') }}</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('icon.index') }}" class="nav-link {{ set_active_sub(['icon.index']) }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Icon') }}</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('popup.index') }}" class="nav-link {{ set_active(['popup.index', 'popup.create']) }}">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>{{ __('Pop Up') }}</p>
+                    </a>
                 </li>
             </ul>
         </nav>

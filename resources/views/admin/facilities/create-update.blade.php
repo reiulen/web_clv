@@ -1,22 +1,21 @@
-<x-app-layout title="Artikel">
+<x-app-layout title="Tambah Halaman">
     <x-content_header>
         <div class="col-sm-6">
-            <h4>{{ isset($data) ? 'Edit' : 'Tambah' }} Artikel</h4>
+            <h4>{{ isset($data) ? 'Edit' : 'Tambah' }} Halaman</h4>
         </div>
 
         <x-breadcrumb>
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item">{{ __('Blog') }}</li>
             <li class="breadcrumb-item item">
-                <a href="{{ route('blog.artikel.index') }}">{{ __('Artikel') }}</a>
+                <a href="{{ route('page.halaman.index') }}">{{ __('Halaman') }}</a>
             </li>
-            <li class="breadcrumb-item item active">{{ __( (isset($data) ? 'Edit' : 'Tambah') . ' Artikel') }}</li>
+            <li class="breadcrumb-item item active">{{ __( (isset($data) ? 'Edit' : 'Tambah') . ' Halaman') }}</li>
         </x-breadcrumb>
     </x-content_header>
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="post" action="{{ isset($data) ? route('blog.artikel.update', $data->id) : route('blog.artikel.store') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ isset($data) ? route('page.halaman.update', $data->id) : route('page.halaman.store') }}" enctype="multipart/form-data">
                 @csrf
                 @if (isset($data))
                     @method('PUT')
@@ -48,7 +47,7 @@
                                         <i class="fa fa-save"></i>
                                         Simpan
                                     </button>
-                                    <a href="{{ route('blog.artikel.index') }}" class="btn btn-danger">
+                                    <a href="{{ route('page.halaman.index') }}" class="btn btn-danger">
                                         <i class="fa fa-times"></i>
                                         Batal
                                     </a>
@@ -76,6 +75,17 @@
                                             <select class="form-control @error('status') is-invalid @enderror" name="status" id="status">
                                                 @foreach ($status as $key => $st)
                                                     <option value="{{ $key }}" {{ $key == old('status', ($data->status ?? 0)) ? 'selected' : '' }}>{{ $st }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-12 mb-3">
+                                            <label for="type_page_id">
+                                                Tipe Halaman
+                                            </label>
+                                            <select class="form-control select2 @error('type_page_id') is-invalid @enderror" name="type_page_id" id="type_page_id">
+                                                <option value="">Pilih tipe</option>
+                                                @foreach ($type_page as $key => $st)
+                                                    <option value="{{ $key }}" {{ $key == old('type_page_id', ($data->type_page_id ?? 0)) ? 'selected' : '' }}>{{ $st }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -151,6 +161,7 @@
     <!-- /.content -->
 
     @include('lib.summernote')
+    @include('lib.select2')
     @push('script')
     <script>
         $.ajaxSetup({
@@ -162,6 +173,7 @@
         const uploadUrl = '{{ route("uploadPhoto") }}';
         const deleteUrl = '{{ route("deletePhoto") }}';
         const heightRow = 400;
+        $('.select2').select2();
     </script>
     <script src="{{ asset('assets/dist/js/summernote-upload.js') }}"></script>
     <script src="{{ asset('assets/dist/js/gallery.js') }}"></script>
