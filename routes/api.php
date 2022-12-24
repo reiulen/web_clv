@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ArtikelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => 'blog', 'as' => 'blog.'], function() {
+    Route::get('/artikel/getAll', [ArtikelController::class, 'getAll'])->name('artikel.getData');
+    Route::get('/artikel/getDetail/{slug}', [ArtikelController::class, 'getDetail'])->name('artikel.getDetail');
 });

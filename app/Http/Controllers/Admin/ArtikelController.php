@@ -212,4 +212,38 @@ class ArtikelController extends Controller
                            ->make(true);
 
     }
+
+    public function getAll(Request $request)
+    {
+        $data = Artikel::select('id', 'title', 'slug', 'thumbnail',
+                                'status', 'content', 'created_at')
+                        ->latest();
+
+        if(isset($request->paginate))
+            $data = $data->paginate($request->paginate);
+
+        if(isset($request->limit))
+            $data = $data->limit($request->limit)->get();
+
+        if(isset($request->paginate) && isset($request->limit))
+            $data = $data->get();
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
+    public function getDetail(Request $request, $slug)
+    {
+        $data = Artikel::firstWhere([ 'slug' => $slug ]);
+
+        if(empty($data))
+            return response()->json([
+                'message' => 'Data tidak ditemukan',
+            ]);
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
 }
