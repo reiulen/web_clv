@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Artikel;
+use App\Models\ViewArtikel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -151,7 +152,8 @@ class ArtikelController extends Controller
 
     public function dataTable(Request $request)
     {
-        $data = Artikel::select('id', 'status', 'title', 'created_at')
+        $data = Artikel::select('id', 'status', 'title', 'created_at', 'slug')
+                        ->with('views:id,views,artikel_id')
                         ->latest()
                         ->filter($request);
 
@@ -186,12 +188,16 @@ class ArtikelController extends Controller
                                                 <div class='col-md-2 ml-auto'>
                                                     $status
                                                 </div>
+                                                <div class='col-md-1 ml-auto text-right'>
+                                                    <i class='fas fa-eye pr-1'></i>
+                                                   ".($data->views->sum('views') ?? 0)."
+                                                </div>
                                                 <div class='col-md-1'>
                                                     <button class='btn btn-none' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                                         <i class='fas fa-ellipsis-v'></i>
                                                     </button>
                                                     <div class='dropdown-menu dropdown-menu-right border-0' aria-labelledby='dropdownMenuButton'>
-                                                        <a class='dropdown-item' href='/' target='_blank'>
+                                                        <a class='dropdown-item' href='".env('FRONT_URL')."/artikel/$data->slug' target='_blank'>
                                                             <i class='fas fa-eye text-primary pr-1'></i>
                                                             Pratijau
                                                         </a>
@@ -217,15 +223,16 @@ class ArtikelController extends Controller
     {
         $data = Artikel::select('id', 'title', 'slug', 'thumbnail',
                                 'status', 'content', 'created_at')
+                        ->where('status', 1)
                         ->latest();
 
         if(isset($request->paginate))
-            $data = $data->paginate($request->paginate);
+            $data = $data->paginate($request->paginate)->toArray();
 
         if(isset($request->limit))
             $data = $data->limit($request->limit)->get();
 
-        if(isset($request->paginate) && isset($request->limit))
+        if(empty($request->paginate) && empty($request->limit))
             $data = $data->get();
 
         return response()->json([
@@ -235,15 +242,17 @@ class ArtikelController extends Controller
 
     public function getDetail(Request $request, $slug)
     {
-        $data = Artikel::firstWhere([ 'slug' => $slug ]);
+        $data = Artikel::firstWhere([ 'slug' => $slug, 'status' => 1]);
 
-        if(empty($data))
-            return response()->json([
-                'message' => 'Data tidak ditemukan',
-            ]);
+        if($data) {
+            $dateNow = date('Y-m-d');
+            $view = ViewArtikel::where(['date' => $dateNow, 'artikel_id' => $data->id])->first() ?? new ViewArtikel;
+            $view->views = ($view->views ?? 0) + 1;
+            $view->artikel_id = $data->id;
+            $view->date = $dateNow;
+            $view->save();
+        }
 
-        return response()->json([
-            'data' => $data
-        ]);
+        return response()->json($data);
     }
 }

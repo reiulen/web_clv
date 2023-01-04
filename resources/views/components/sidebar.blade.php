@@ -117,8 +117,8 @@
                     </a>
                 </li>
                 <li
-                    class="nav-item nav-item {{ set_menu_open(['icon.index']) }}">
-                    <a href="#" class="nav-link {{ set_active(['icon.index']) }}">
+                    class="nav-item nav-item {{ set_menu_open(['icon.index', 'product.index']) }}">
+                    <a href="#" class="nav-link {{ set_active(['icon.index', 'product.index']) }}">
                         <i class="fas fa-book nav-icon"></i>
                         <p>
                             {{ __('Produk') }}
@@ -144,6 +144,24 @@
                     <a href="{{ route('popup.index') }}" class="nav-link {{ set_active(['popup.index', 'popup.create']) }}">
                         <i class="nav-icon fas fa-book"></i>
                         <p>{{ __('Pop Up') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('slider.index') }}" class="nav-link {{ set_active(['slider.index', 'slider.create']) }}">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>{{ __('Slider') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('request-brosur.index') }}" class="nav-link {{ set_active(['request-brosur.index', 'request-brosur.create']) }}">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>{{ __('Request Brosur') }}</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('setting.index') }}" class="nav-link {{ set_active(['setting.index']) }}">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>{{ __('Setting') }}</p>
                     </a>
                 </li>
             </ul>

@@ -195,4 +195,13 @@ class IconController extends Controller
                            ->make(true);
 
     }
+
+    public function getIcons(Request $request)
+    {
+        $data = Icons::select('id', 'name as text', 'icon')
+                        ->where('name', 'like', '%'.$request->keyword.'%')
+                        ->get();
+
+        return $data->toJson();
+    }
 }

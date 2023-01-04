@@ -10,6 +10,11 @@ class Artikel extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
+    public function views()
+    {
+        return $this->hasMany(ViewArtikel::class);
+    }
+
     public function scopeFilter($query, $request)
     {
         $query->when($request->title ?? false, function ($query) use ($request) {

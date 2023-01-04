@@ -83,3 +83,28 @@ async function sendData(url, type, data) {
 
     return result;
 }
+
+
+async function sendDataFile(url, type, data) {
+    const header = {
+        "Content-Type": "multipart/form-data",
+    };
+
+    const config = {
+        method: type,
+        url: url,
+        header: header,
+        data: data
+    };
+
+    const result = await axios(config)
+                    .then((res) => res.data)
+                    .then(async (res) => {
+                        return res;
+                    }).catch(async (err) => {
+                        Swal.fire(`Gagal`, err.responseJSON.message, "error");
+                        return err.response;
+                    });
+
+    return result;
+}

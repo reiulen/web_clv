@@ -1,13 +1,12 @@
-<x-app-layout title="Artikel">
+<x-app-layout title="Produk">
     <x-content_header>
         <div class="col-sm-6">
-            <h4>Artikel</h4>
+            <h4>Produk</h4>
         </div>
 
         <x-breadcrumb>
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item">{{ __('Blog') }}</li>
-            <li class="breadcrumb-item item">{{ __('Artikel') }}</li>
+            <li class="breadcrumb-item item">{{ __('Produk') }}</li>
         </x-breadcrumb>
     </x-content_header>
     <!-- Main content -->
@@ -20,7 +19,7 @@
                         <div class="row">
                             <div class="d-md-flex">
                                 <div>
-                                    <a class="btn btn-primary border-0" href="{{ route('blog.artikel.create') }}"><i class="fa fa-plus px-1"></i> Tambah</a>
+                                    <a class="btn btn-primary border-0" href="{{ route('product.create') }}"><i class="fa fa-plus px-1"></i> Tambah</a>
                                 </div>
                             </div>
                         </div>
@@ -73,6 +72,6 @@
 
     @include('lib.datatable')
     @push('script')
-    <script src="{{ asset('assets/dist/js/pages/artikel/index.js') }}"></script>
+    <script src="{{ asset('assets/dist/js/pages/product/index.js') }}"></script>
     @endpush
 </x-app-layout>

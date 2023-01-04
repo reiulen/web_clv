@@ -49,7 +49,6 @@ class PageController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required'
         ]);
 
@@ -109,7 +108,6 @@ class PageController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required'
         ]);
 
@@ -224,5 +222,39 @@ class PageController extends Controller
                            ->smart(true)
                            ->make(true);
 
+    }
+
+    public function getAll(Request $request)
+    {
+        $data = Page::select('id', 'title', 'slug', 'status', 'link_youtube', 'content', 'type_page_id', 'created_at')
+                        ->with('typePage:id,name')
+                        ->where('status', 1)
+                        ->latest();
+
+        if($request->type)
+            $data = $data->whereHas('typePage', function($query) use ($request) {
+                $query->where('name', $request->type);
+            });
+
+        if(isset($request->paginate))
+            $data = $data->paginate($request->paginate)->toArray();
+
+        if(isset($request->limit))
+            $data = $data->limit($request->limit)->get();
+
+        if(empty($request->paginate) && empty($request->limit))
+            $data = $data->get();
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
+    public function getDetail(Request $request, $slug)
+    {
+        $data = Page::select('id', 'title', 'slug', 'link_youtube', 'thumbnail', 'content', 'type_page_id', 'status')
+                        ->firstWhere([ 'slug' => $slug, 'status' => 1]);
+
+        return response()->json($data);
     }
 }

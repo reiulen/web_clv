@@ -70,7 +70,7 @@ if(!function_exists('upload_image')){
             });
         }
 
-        $image->resize($width ?? 600, $height, function ($constraint) {
+        $image->resize($width ?? 850, $height, function ($constraint) {
             $constraint->aspectRatio();
         });
 
