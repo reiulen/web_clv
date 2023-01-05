@@ -9,6 +9,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PopupController extends Controller
 {
+
+    public function getPopup(Request $request)
+    {
+        $facilities = Popup::select('id', 'name as text', 'image')
+                            ->where('name', 'like', '%'.$request->keyword.'%')
+                            ->get();
+        return $facilities->toJson();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -138,6 +147,7 @@ class PopupController extends Controller
                 $image = $popupModel->image;
                 if($request->hasFile('image')){
                     $image = upload_image($request->file('image'), 'Popup', 'Popup');
+                    File::delete($popupModel->image);
                 }
                 $popupModel->image = $image;
                 break;
@@ -155,8 +165,10 @@ class PopupController extends Controller
                     'content' => 'required',
                     'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ]);
+                $image = $popupModel->image;
                 if($request->hasFile('image')){
                     $image = upload_image($request->file('image'), 'Popup', 'Popup');
+                    File::delete($popupModel->image);
                 }
                 $popupModel->image = $image;
                 $popupModel->title = $request->title;

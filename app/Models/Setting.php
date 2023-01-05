@@ -9,4 +9,9 @@ class Setting extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function popup()
+    {
+        return $this->belongsTo(Popup::class);
+    }
 }

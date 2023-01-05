@@ -1,9 +1,12 @@
 <?php
 
+use App\Mail\SendMain;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IconController;
 use App\Http\Controllers\PopupController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\SosmedController;
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Admin\PageController;
@@ -11,6 +14,7 @@ use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\Admin\ArtikelController;
 use App\Http\Controllers\RequestBrosurController;
 use App\Http\Controllers\Admin\TypePageController;
+use App\Http\Controllers\CounterSectionController;
 use App\Http\Controllers\Admin\TextEditorController;
 
 /*
@@ -25,7 +29,7 @@ use App\Http\Controllers\Admin\TextEditorController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('login'));
 });
 
 Route::middleware([
@@ -88,6 +92,7 @@ Route::middleware([
         Route::put('/{id}/edit', [PopupController::class, 'update'])->name('update');
         Route::delete('/{id}', [PopupController::class, 'destroy'])->name('destroy');
         Route::post('/dataTable', [PopupController::class, 'dataTable'])->name('dataTable');
+        Route::get('/getPopup', [PopupController::class, 'getPopup'])->name('getPopup');
     });
 
 
@@ -109,4 +114,30 @@ Route::middleware([
         Route::post('/', [SettingController::class, 'store'])->name('store');
     });
 
+    Route::group(['prefix' => 'sosmed', 'as' => 'sosmed.'], function() {
+        Route::resource('/', SosmedController::class);
+        Route::get('/{id}/edit', [SosmedController::class, 'edit'])->name('edit');
+        Route::delete('/{id}', [SosmedController::class, 'destroy'])->name('destroy');
+        Route::post('/dataTable', [SosmedController::class, 'dataTable'])->name('dataTable');
+    });
+
+    Route::group(['prefix' => 'counter-section', 'as' => 'counter-section.'], function() {
+        Route::resource('/', CounterSectionController::class);
+        Route::get('/{id}/edit', [CounterSectionController::class, 'edit'])->name('edit');
+        Route::delete('/{id}', [CounterSectionController::class, 'destroy'])->name('destroy');
+        Route::post('/dataTable', [CounterSectionController::class, 'dataTable'])->name('dataTable');
+    });
+
+    Route::group(['prefix' => 'about-us', 'as' => 'about-us.'], function() {
+        Route::resource('/', AboutUsController::class);
+        Route::get('/{id}/edit', [AboutUsController::class, 'edit'])->name('edit');
+        Route::delete('/{id}', [AboutUsController::class, 'destroy'])->name('destroy');
+        Route::post('/dataTable', [AboutUsController::class, 'dataTable'])->name('dataTable');
+    });
+
+
+});
+
+Route::get('/test', function () {
+    Mail::to('ulenstack@gmail.com')->send(new SendMain('test', 'test'));
 });

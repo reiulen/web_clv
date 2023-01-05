@@ -158,11 +158,49 @@
                         <p>{{ __('Request Brosur') }}</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('setting.index') }}" class="nav-link {{ set_active(['setting.index']) }}">
+                <li
+                    class="nav-item nav-item {{ set_menu_open(['setting.index', 'about-us.index', 'sosmed.index']) }}">
+                    <a href="#" class="nav-link {{ set_active(['setting.index', 'about-us.index', 'sosmed.index']) }}">
                         <i class="nav-icon fas fa-cog"></i>
-                        <p>{{ __('Setting') }}</p>
+                        <p>
+                            {{ __('Setting') }}
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <li class="nav-item">
+                                <a href="{{ route('setting.index') }}" class="nav-link {{ set_active_sub(['setting.index']) }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ __('Default') }}</p>
+                                </a>
+                            </li>
+                        </li>
+                        <li class="nav-item">
+                            <li class="nav-item">
+                                <a href="{{ route('about-us.index') }}" class="nav-link {{ set_active_sub(['about-us.index']) }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ __('About Us') }}</p>
+                                </a>
+                            </li>
+                        </li>
+                        <li class="nav-item">
+                            <li class="nav-item">
+                                <a href="{{ route('counter-section.index') }}" class="nav-link {{ set_active_sub(['counter-section.index']) }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ __('Counter Section') }}</p>
+                                </a>
+                            </li>
+                        </li>
+                        <li class="nav-item">
+                            <li class="nav-item">
+                                <a href="{{ route('sosmed.index') }}" class="nav-link {{ set_active_sub(['sosmed.index']) }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ __('Sosmed') }}</p>
+                                </a>
+                            </li>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

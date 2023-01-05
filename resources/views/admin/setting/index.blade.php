@@ -73,6 +73,7 @@
     <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+    @include('lib.select2')
     @include('lib.summernote')
     @push('script')
     <script src="{{ asset('assets/dist/js/pages/setting/create-update.js') }}"></script>
@@ -85,6 +86,67 @@
                 text = text.replace(/%0A/g, "\n");
                 text = text.replace(/%20/g, " ");
                 $(this).val(text);
+            });
+
+            function formatState (state) {
+                var state = state;
+                if(!state.image) {
+                    state = {
+                        ...state,
+                        image: '{{ $setting->popup->image ?? '' }}'
+                    }
+                }
+                if (!state.id) {
+                    return state.text;
+                }
+
+                return $(`
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img class="img-selected" src="${url}/${state.image}" style="width: 55px; height: 25px; object-fit: cover; ">
+                        <span>${state.text}</span>
+                    </div>
+                `);
+            };
+
+            function formatList (state) {
+                if (!state.id) {
+                    return state.text;
+                }
+
+                return $(`
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <img src="${url}/${state.image}" style="width: 100px; height: 60px; object-fit: cover; ">
+                        <span>${state.text}</span>
+                    </div>
+                `);
+            };
+
+            @if (isset($setting->popup_id))
+            var $newOption = $("<option selected='selected'></option>").val("{{ $setting->popup_id ?? '0' }}").text("{{ $setting->popup->name ?? '' }}");
+            $("#selectPopup").append($newOption).trigger('change');
+            @endif
+
+            $('#selectPopup').select2({
+                templateResult: formatList,
+                templateSelection: formatState,
+                minimumInputLength: 2,
+                ajax: {
+                    url: '{{route("popup.getPopup")}}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (data) {
+                        return {
+                            keyword: data.term
+                        };
+                    },
+                    processResults: function (response) {
+                        console.log(response)
+                        return {
+                            results:response
+                        };
+                    },
+                    cache: true
+                }
             });
         });
     </script>

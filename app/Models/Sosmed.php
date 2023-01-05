@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Icons extends Model
+class Sosmed extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
@@ -18,8 +18,8 @@ class Icons extends Model
             return $query->where('created_at', 'like', "%$request->date%");
         })->when($request->status ?? false, function ($query) use ($request) {
             return $query->where('status', $request->status);
-        })->when($request->icon ?? false, function ($query) use ($request) {
-            return $query->where('icon', 'like', "%$request->icon%");
+        })->when($request->link ?? false, function ($query) use ($request) {
+            return $query->where('link', 'like', "%$request->link%");
         });
     }
 }

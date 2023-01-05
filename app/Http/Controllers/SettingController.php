@@ -10,7 +10,9 @@ class SettingController extends Controller
 {
     public function index(Request $request)
     {
-        $setting = Setting::latest()->first();
+        $setting = Setting::with('popup')
+                            ->latest()
+                            ->first();
         return view('admin.setting.index', compact('setting'));
     }
 
@@ -34,6 +36,7 @@ class SettingController extends Controller
         $setting_chat_wa = str_replace("\r\n", "%0A", $setting_chat_wa);
         $setting_chat_wa = str_replace(" ", "%20", $setting_chat_wa);
         $input['setting_chat_wa'] = $setting_chat_wa;
+        $input['is_popup'] = $request->is_popup ? 1 : 0;
 
         foreach($image as $img) {
             if($request->hasFile($img)) {
@@ -52,7 +55,9 @@ class SettingController extends Controller
 
     public function getData(Request $request)
     {
-        $setting = Setting::latest()->first();
+        $setting = Setting::with('popup')
+                            ->latest()
+                            ->first();
         return response()->json($setting);
     }
 }

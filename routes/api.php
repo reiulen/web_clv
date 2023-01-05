@@ -3,12 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\SosmedController;
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\Admin\ArtikelController;
 use App\Http\Controllers\RequestBrosurController;
+use App\Http\Controllers\CounterSectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +58,18 @@ Route::group(['prefix' => 'request-brosur', 'as' => 'request-brosur.'], function
 
 Route::group(['prefix' => 'setting', 'as' => 'setting.'], function() {
     Route::get('/', [SettingController::class, 'getData'])->name('getData');
+});
+
+Route::group(['prefix' => 'sosmed', 'as' => 'sosmed.'], function() {
+    Route::get('/getData', [SosmedController::class, 'getData'])->name('getData');
+});
+
+Route::group(['prefix' => 'counter-section', 'as' => 'counter-section.'], function() {
+    Route::get('/getData', [CounterSectionController::class, 'getData'])->name('getData');
+});
+
+Route::group(['prefix' => 'about-us', 'as' => 'about-us.'], function() {
+    Route::get('/getData', [AboutUsController::class, 'getData'])->name('getData');
 });
 
 

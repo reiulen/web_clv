@@ -36,12 +36,12 @@ const table = $("#example1").DataTable({
     processing: true,
     serverSide: true,
     ajax: {
-        url: `${url}/admin/facilities/dataTable`,
+        url: `${url}/admin/counter-section/dataTable`,
         method: "POST",
         data: function (d) {
             d.name = $('input[name="name"]').val();
             d.date = $('input[name="date"]').val();
-            d.status = $('select[name="status"]').val();
+            d.content = $('input[name="content"]').val();
             return d;
         },
     },
@@ -63,20 +63,19 @@ $('#filterName').on('keyup', function() {
     table.draw();
 });
 
+$('#filterContent').on('keyup', function() {
+    table.draw();
+});
+
 $('#filterDate').on('change', function() {
     table.draw();
 });
-
-$('#filterStatus').on('change', function() {
-    table.draw();
-});
-
 
 table.on("click", ".btn-hapus", function (e) {
     e.preventDefault();
     const id = $(this).data("id");
     const nama = $(this).data("title");
-    const urlTarget = `${url}/admin/facilities/${id}`
+    const urlTarget = `${url}/admin/counter-section/${id}`
     deleteDataTable(nama, urlTarget, table)
 });
 
@@ -86,41 +85,17 @@ $(function() {
         $('#modalInput').modal('show');
     });
 
-    table.on('click', '.btnEdit', async function() {
+    table.on('click', '.btnEdit', function() {
         const form = $('#submitInput');
-        const modal = $('#modalInput');
         const id = $(this).data('id');
-
+        const name = $(this).data('name');
+        const status = $(this).data('status');
+        const content = $(this).data('content');
+        const modal = $('#modalInput');
         modal.modal('show');
-        modal.find('.modal-body')
-                .append(`<div class="spinner-border text-primary" role="status" style="
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        z-index: 9999;">
-                    <span class="sr-only">Loading...</span>
-                </div>`)
-
-
-
-        try {
-            const result = await sendData(`${url}/admin/bout-us/${id}/edit`);
-            if(result.status == 'success') {
-                modal.find('.spinner-border').remove();
-                const data = result.data;
-                form.find('[name="id"]').val(data.id);
-                form.find('[name="name"]').val(data.name);
-                form.find('[name="status"]').val(data.status);
-                form.find('.img-preview#foto').attr('style', `background-image: url(${url}/${data.foto})`);
-            }else {
-                modal.find('.spinner-border').remove();
-                Swal.fire(`Gagal`, result.message, "error");
-            }
-
-        }catch(err) {
-            modal.find('.spinner-border').remove();
-            Swal.fire(`Gagal`, "Gagal mengambil data", "error");
-        }
+        form.find('[name="id"]').val(id);
+        form.find('[name="name"]').val(name);
+        form.find('[name="content"]').val(content);
     });
 
     $('#submitInput').on('change', function() {
@@ -129,12 +104,13 @@ $(function() {
         checkValue();
     }).on('submit', async function(e) {
         e.preventDefault();
+        const form = $(this);
         const buttonSubmit = $('#submitBtn');
         buttonSubmit.attr('disabled', true);
         buttonSubmit.html('Loading...');
-        const data = new FormData(this);
+        const data = form.serialize();
 
-       const result = await sendDataFile(`${url}/admin/facilities`, 'POST', data);
+       const result = await sendData(`${url}/admin/counter-section`, 'POST', data);
         if (result.status == 'success') {
             buttonSubmit.attr('disabled', false).html('Simpan');
             $('#modalInput').modal('hide');
@@ -149,7 +125,6 @@ $(function() {
     $('#modalInput').on('hide.bs.modal', function (e) {
         const form = $(this).find('#submitInput');
         form.find('[name="id"]').val('');
-        form.find('.img-preview#foto').attr('style', '');
         form.trigger('reset');
     });
 
@@ -157,15 +132,10 @@ $(function() {
         const submitBtn = $('#submitBtn');
         const name = $('#name').val();
         const status = $('#status').val();
-        var foto = $('[name="foto"]').val();
-        const edit = $('[name="id"]').val();
+        const link = $('#link').val();
 
-        if(edit)
-            foto = 'image';
-
-        if (name == '' || status == '' || foto == '') {
-            if(edit != '')
-                submitBtn.attr('disabled', true);
+        if (name == '' || status == '' || link == '') {
+            submitBtn.attr('disabled', true);
         } else {
             submitBtn.attr('disabled', false);
         }

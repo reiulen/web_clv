@@ -36,12 +36,12 @@ const table = $("#example1").DataTable({
     processing: true,
     serverSide: true,
     ajax: {
-        url: `${url}/admin/facilities/dataTable`,
+        url: `${url}/admin/about-us/dataTable`,
         method: "POST",
         data: function (d) {
-            d.name = $('input[name="name"]').val();
+            d.title = $('input[name="title"]').val();
             d.date = $('input[name="date"]').val();
-            d.status = $('select[name="status"]').val();
+            d.description = $('input[name="description"]').val();
             return d;
         },
     },
@@ -59,15 +59,15 @@ const table = $("#example1").DataTable({
     ],
 });
 
-$('#filterName').on('keyup', function() {
+$('#filterTitle').on('keyup', function() {
+    table.draw();
+});
+
+$('#filterDescription').on('keyup', function() {
     table.draw();
 });
 
 $('#filterDate').on('change', function() {
-    table.draw();
-});
-
-$('#filterStatus').on('change', function() {
     table.draw();
 });
 
@@ -76,7 +76,7 @@ table.on("click", ".btn-hapus", function (e) {
     e.preventDefault();
     const id = $(this).data("id");
     const nama = $(this).data("title");
-    const urlTarget = `${url}/admin/facilities/${id}`
+    const urlTarget = `${url}/admin/about-us/${id}`
     deleteDataTable(nama, urlTarget, table)
 });
 
@@ -104,14 +104,13 @@ $(function() {
 
 
         try {
-            const result = await sendData(`${url}/admin/bout-us/${id}/edit`);
+            const result = await sendData(`${url}/admin/about-us/${id}/edit`);
             if(result.status == 'success') {
                 modal.find('.spinner-border').remove();
                 const data = result.data;
                 form.find('[name="id"]').val(data.id);
-                form.find('[name="name"]').val(data.name);
-                form.find('[name="status"]').val(data.status);
-                form.find('.img-preview#foto').attr('style', `background-image: url(${url}/${data.foto})`);
+                form.find('[name="title"]').val(data.title);
+                form.find('[name="description"]').summernote('code', data.description);
             }else {
                 modal.find('.spinner-border').remove();
                 Swal.fire(`Gagal`, result.message, "error");
@@ -134,7 +133,7 @@ $(function() {
         buttonSubmit.html('Loading...');
         const data = new FormData(this);
 
-       const result = await sendDataFile(`${url}/admin/facilities`, 'POST', data);
+       const result = await sendDataFile(`${url}/admin/about-us`, 'POST', data);
         if (result.status == 'success') {
             buttonSubmit.attr('disabled', false).html('Simpan');
             $('#modalInput').modal('hide');
@@ -149,25 +148,21 @@ $(function() {
     $('#modalInput').on('hide.bs.modal', function (e) {
         const form = $(this).find('#submitInput');
         form.find('[name="id"]').val('');
-        form.find('.img-preview#foto').attr('style', '');
+        form.find('[name="description"]').summernote('reset');
         form.trigger('reset');
     });
 
     function checkValue() {
         const submitBtn = $('#submitBtn');
-        const name = $('#name').val();
-        const status = $('#status').val();
-        var foto = $('[name="foto"]').val();
-        const edit = $('[name="id"]').val();
+        const title = $('#title').val();
+        const description = $('#description').val();
 
-        if(edit)
-            foto = 'image';
-
-        if (name == '' || status == '' || foto == '') {
-            if(edit != '')
-                submitBtn.attr('disabled', true);
-        } else {
+        if(title == '' || description == '') {
+            submitBtn.attr('disabled', true);
+        }else {
             submitBtn.attr('disabled', false);
         }
+
+
     }
 })
